@@ -19,12 +19,24 @@ public class IntListTest {
         IntList x = IntList.of(3, 2, 1);
         assertEquals(threeTwoOne, x);
     }
+    @Test(timeout = 1000)
+    public void testReverse(){
+        IntList L = IntList.of(1, 2, 3);
+        IntList actual =  IntList.reverse(L);
+        assertEquals(IntList.of(3, 2, 1), actual);
+        assertNotEquals(IntList.of(1, 2, 3), L);
 
+        IntList actual2 = IntList.reverse(null);
+        assertEquals(null, actual2);
+
+
+    }
     @Test
     public void testdSquareList() {
         IntList L = IntList.of(1, 2, 3);
         IntList.dSquareList(L);
         assertEquals(IntList.of(1, 4, 9), L);
+
     }
 
     /**

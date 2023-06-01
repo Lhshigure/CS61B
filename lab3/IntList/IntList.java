@@ -29,7 +29,7 @@ public class IntList {
      * A List with null rest, and first = 0.
      */
     public IntList() {
-    /* NOTE: public IntList () { }  would also work. */
+        /* NOTE: public IntList () { }  would also work. */
         this(0, null);
     }
 
@@ -82,13 +82,13 @@ public class IntList {
 
     public static IntList dcatenate(IntList A, IntList B) {
         //TODO:  fill in method
-        if (A == null){
+        if (A == null) {
             return B;
-        }else if(B == null){
+        } else if (B == null) {
             return A;
-        }else{
+        } else {
             IntList p = A;
-            while(p.rest != null){
+            while (p.rest != null) {
                 p = p.rest;
             }
             p.rest = B;
@@ -102,25 +102,48 @@ public class IntList {
      */
     public static IntList catenate(IntList A, IntList B) {
         //TODO:  fill in method
-        if (A == null){
+        if (A == null) {
             return B;
-        }else if(B == null){
+        } else if (B == null) {
             return A;
-        }else{
+        } else {
             IntList lst = new IntList(A.first, null);
             IntList p = lst;
-            while(A.rest != null){
+            while (A.rest != null) {
                 p.rest = new IntList(A.rest.first, null);
                 p = p.rest;
                 A = A.rest;
             }
-            while(B != null){
+            while (B != null) {
                 p.rest = new IntList(B.first, null);
                 p = p.rest;
                 B = B.rest;
             }
             return lst;
         }
+    }
+
+    /**
+     * Returns the reverse of the given IntList.
+     * This method is destructive. If given null
+     * as an input, returns null.
+     */
+    public static IntList reverse(IntList A){
+        if(A == null || A.rest == null){
+            return A;
+        }
+        IntList reversed = reverse(A.rest);
+        A.rest.rest = A;
+        A.rest = null;
+        return reversed;
+        /* non-destructive
+        IntList relst = new IntList(A.first, null);
+        IntList ptr = relst;
+        while(A.rest != null){
+            relst = new IntList(A.rest.first, relst);
+            A = A.rest;
+        }
+        return relst;*/
     }
 
 
