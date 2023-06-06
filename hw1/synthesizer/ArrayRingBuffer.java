@@ -37,7 +37,7 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
     public void enqueue(T x) {
         // TODO: Enqueue the item. Don't forget to increase fillCount and update last.
         if(isFull()){
-
+            throw new RuntimeException("this is full");
         }
         rb[last] = x;
         last = (last + 1) % capacity;
@@ -52,7 +52,7 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
     public T dequeue() {
         // TODO: Dequeue the first item. Don't forget to decrease fillCount and update 
         if(isEmpty()){
-
+            throw new RuntimeException("this is empty");
         }
         T reTvalue = rb[first];
         fillCount -= 1;
@@ -72,13 +72,13 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
     // TODO: When you get to part 5, implement the needed code to support iteration.
     private class ArrayRingBufferIterator implements Iterator<T>{
         private int wizPos;
-        private int curNum = 0;
+        private int curNum;
         public ArrayRingBufferIterator(){
             wizPos = first;
             curNum = 0;
         }
         public boolean hasNext(){
-            return wizPos < fillCount();
+            return curNum < fillCount();
         }
         public T next(){
             T returnItem = rb[wizPos];
