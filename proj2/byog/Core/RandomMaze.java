@@ -15,7 +15,7 @@ public class RandomMaze {
     private static long SEED = 2873123;
     private static final Random RANDOM = new Random(SEED);
 
-    public void seed(int x){
+    public void seed(long x){
         this.SEED = x;
     }
 

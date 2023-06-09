@@ -37,7 +37,7 @@ public class Game {
         // and return a 2D tile representation of the world that would have been
         // drawn if the same inputs had been given to playWithKeyboard().
         String numString = input.substring(1, input.length() - 1);
-        int inputSeed = Integer.parseInt(numString);
+        long inputSeed = Long.parseLong(numString);
         RandomMaze map = new RandomMaze();
         map.seed(inputSeed);
         TETile[][] finalWorldFrame = map.start();
@@ -46,7 +46,7 @@ public class Game {
 
     public static void main(String[] args){
         Game game = new Game();
-        TETile[][] world = game.playWithInputString("N1234S");
+        TETile[][] world = game.playWithInputString("N5197880843569031643S");
         System.out.println(TETile.toString(world));
     }
 }
