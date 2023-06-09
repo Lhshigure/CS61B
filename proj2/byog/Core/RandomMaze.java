@@ -10,10 +10,14 @@ import java.util.List;
 import java.util.Random;
 
 public class RandomMaze {
-    private static final int WIDTH = 60;
+    private static final int WIDTH = 80;
     private static final int HEIGHT = 40;
-    private static final long SEED = 2873123;
+    private static long SEED = 2873123;
     private static final Random RANDOM = new Random(SEED);
+
+    public void seed(int x){
+        this.SEED = x;
+    }
 
 
     static class P{
@@ -224,7 +228,7 @@ public class RandomMaze {
         }
     }
     //生成地图和随机迷宫
-    public static void start(){
+    public TETile[][] start(){
         // initialize the tile rendering engine with a window of size WIDTH x HEIGHT
         TERenderer ter = new TERenderer();
         ter.initialize(WIDTH, HEIGHT);
@@ -245,9 +249,6 @@ public class RandomMaze {
 
         // draws the world to the screen
         ter.renderFrame(world);
-    }
-
-    public static void main(String[] args) {
-        start();
+        return world;
     }
 }
