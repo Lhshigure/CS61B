@@ -59,8 +59,8 @@ public class Percolation {
 
         //第二行和virtual up side(0,0) connect
         for(int i = 0; i < n; i++){
-            grid.union(0,(n+2)+i);
-            backwashGrid.union(0,(n+2)+i);
+            grid.union(0,(n+3)+i);
+            backwashGrid.union(0,(n+3)+i);
         }
 
         //倒数第二行和virtul bottom side(n-1,n-1) connect
@@ -99,6 +99,7 @@ public class Percolation {
         validate(col);
         //virtual top side = （0.0）
         // virtual bottom size = (n-1, n-1)
+
         return isOpen(row, col)&&backwashGrid.connected(0, (row+1)*(n+2) + col + 1);
     }
 
@@ -107,21 +108,9 @@ public class Percolation {
     }
 
     public static void main(String[] arg){
-        Percolation p = new Percolation(5);
-        // test backwash
-        p.open(0,1);
-        p.open(1,1);
-        p.open(2,1);
-        p.open(3,1);
-        p.open(4,1);
-
-        System.out.println( p.isFull(4,1));
-        System.out.println(p.percolates());
-        p.open(2,3);
-        p.open(3,3);
-        p.open(4,3);
-        System.out.println(p.isFull(3,3));
-
+        Percolation p = new Percolation(6);
+        p.open(0,5);
+        System.out.println(p.isFull(0,5));
 
     }
 
