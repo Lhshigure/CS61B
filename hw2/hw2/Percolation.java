@@ -104,13 +104,15 @@ public class Percolation {
     }
 
     public boolean percolates(){
-        return grid.connected(0, (n+2)*(n+2)-1);
+        if(!(this.n == 1)){
+            return grid.connected(0, (n+2)*(n+2)-1);
+        }
+        return isFull(0,0);
     }
 
     public static void main(String[] arg){
-        Percolation p = new Percolation(6);
-        p.open(0,5);
-        System.out.println(p.isFull(0,5));
+        Percolation p = new Percolation(1);
+        System.out.println(p.percolates());
 
     }
 

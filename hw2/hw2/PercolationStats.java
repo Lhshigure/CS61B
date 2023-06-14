@@ -12,8 +12,8 @@ public class PercolationStats {
         for(int i = 0; i < T; i++){
             Percolation p = pf.make(N);
             while(!p.percolates()){
-                int row = StdRandom.uniform(0,N+1);
-                int col = StdRandom.uniform(0,N+1);
+                int row = StdRandom.uniform(1,N+1);
+                int col = StdRandom.uniform(1,N+1);
                 p.open(row, col);
             }
             double threshold = (double)p.numberOfOpenSites() / (N * N);
