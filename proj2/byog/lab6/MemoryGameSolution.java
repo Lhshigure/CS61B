@@ -15,8 +15,8 @@ public class MemoryGameSolution {
     private boolean playerTurn;
     private static final char[] CHARACTERS = "abcdefghijklmnopqrstuvwxyz".toCharArray();
     private static final String[] ENCOURAGEMENT = {"You can do this!", "I believe in you!",
-                                                   "You got this!", "You're a star!", "Go Bears!",
-                                                   "Too easy for you!", "Wow, so impressive!"};
+            "You got this!", "You're a star!", "Go Bears!",
+            "Too easy for you!", "Wow, so impressive!"};
 
     public static void main(String[] args) {
         if (args.length < 1) {
@@ -26,7 +26,7 @@ public class MemoryGameSolution {
 
         long seed = Long.parseLong(args[0]);
         MemoryGameSolution game = new MemoryGameSolution(40, 40, seed);
-        game.startGame();
+        game.flashSequence("1234");
     }
 
     public MemoryGameSolution(int width, int height, long seed) {
@@ -85,7 +85,7 @@ public class MemoryGameSolution {
         for (int i = 0; i < letters.length(); i++) {
             drawFrame(letters.substring(i, i + 1));
             StdDraw.pause(750);
-            drawFrame(" ");
+            //drawFrame(" ");
             StdDraw.pause(750);
         }
     }
@@ -113,7 +113,7 @@ public class MemoryGameSolution {
         StdDraw.clear();
         StdDraw.clear(Color.black);
 
-        // Draw the GUI
+      /*  // Draw the GUI
         if (!gameOver) {
             Font smallFont = new Font("Monaco", Font.BOLD, 20);
             StdDraw.setFont(smallFont);
@@ -122,6 +122,8 @@ public class MemoryGameSolution {
             StdDraw.textRight(width - 1, height - 1, ENCOURAGEMENT[round % ENCOURAGEMENT.length]);
             StdDraw.line(0, height - 2, width, height - 2);
         }
+
+       */
 
         // Draw the actual text
         Font bigFont = new Font("Monaco", Font.BOLD, 30);

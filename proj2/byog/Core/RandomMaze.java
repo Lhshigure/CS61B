@@ -4,6 +4,7 @@ import byog.TileEngine.TERenderer;
 import byog.TileEngine.TETile;
 import byog.TileEngine.Tileset;
 import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.introcs.StdDraw;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,13 +13,17 @@ import java.util.Random;
 public class RandomMaze {
     private static final int WIDTH = 80;
     private static final int HEIGHT = 40;
-    private static long SEED = 2873123;
-    private static final Random RANDOM = new Random(SEED);
+    private static Random RANDOM;
+
+    private static int playerX = 0;
+    private static int playerY = 0;
+
+    private static int destinationX = 0;
+    private static int destinationY = 0;
 
     public void seed(long x){
-        this.SEED = x;
+        this.RANDOM = new Random(x);
     }
-
 
     static class P{
         int x;
@@ -227,28 +232,62 @@ public class RandomMaze {
             }
         }
     }
-    //生成地图和随机迷宫
-    public TETile[][] start(){
-        // initialize the tile rendering engine with a window of size WIDTH x HEIGHT
-        TERenderer ter = new TERenderer();
-        ter.initialize(WIDTH, HEIGHT);
-
-        // initialize tiles
-        TETile[][] world = new TETile[WIDTH][HEIGHT];
-        for (int x = 0; x < WIDTH; x += 1) {
-            for (int y = 0; y < HEIGHT; y += 1) {
-                world[x][y] = Tileset.NOTHING;
+    //在迷宫中的随机的floor位置生成一个人物
+    public static void player(TETile[][] world){
+        playerX = RANDOM.nextInt(WIDTH-15) + 10;
+        playerY = RANDOM.nextInt(HEIGHT-15) + 10;
+        boolean condition = true;
+        while(condition){
+            if(world[playerX][playerY].equals(Tileset.FLOOR)){
+                world[playerX][playerY] = Tileset.PLAYER;
+                condition = false;
+            }else{
+                playerX = RANDOM.nextInt(WIDTH-15) + 10;
+                playerY = RANDOM.nextInt(HEIGHT-15) + 10;
             }
         }
+    }
+    //在map上打印出player的移动
+    public static void printPlayerMove(TETile[][]world, int x, int y){
+        if(world[playerX + x][playerY + y] == Tileset.FLOOR){
+            //把上一步player的位置还原成floor
+            world[playerX][playerY] = Tileset.FLOOR;
+            playerX += x;
+            playerY += y;
+            world[playerX][playerY] = Tileset.PLAYER;
+        }
+    }
+
+    //print distination in map randomly
+    public static void gameOver(TETile[][] world){
+        destinationX = RANDOM.nextInt(WIDTH-15) + 10;
+        destinationY = RANDOM.nextInt(HEIGHT-15) + 10;
+        boolean condition = true;
+        while(condition){
+            if(world[destinationX][destinationY].equals(Tileset.FLOOR)){
+                world[destinationX][destinationY] = Tileset.FLOWER;
+                condition = false;
+            }else{
+                destinationX = RANDOM.nextInt(WIDTH-15) + 10;
+                destinationY = RANDOM.nextInt(HEIGHT-15) + 10;
+            }
+        }
+    }
+
+    //生成地图和随机迷宫
+    public TETile[][] start(TETile[][] world, int x, int y){
 
         P[] ps = addPosition();
         P[] psCenter = addRectangle(world, ps);
         P[] sorted = sortPostionByX(psCenter);
         connectCenter(sorted, world);
         hallwayFill(world);
-
-        // draws the world to the screen
-        ter.renderFrame(world);
+        if(playerX == 0 && playerY == 0){
+            player(world);
+        }else{
+            printPlayerMove(world, x, y);
+        }
+        gameOver(world);
         return world;
     }
 }

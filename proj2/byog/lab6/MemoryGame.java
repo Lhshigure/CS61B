@@ -25,11 +25,14 @@ public class MemoryGame {
         }
 
         int seed = Integer.parseInt(args[0]);
-        MemoryGame game = new MemoryGame(40, 40);
-        game.startGame();
+        MemoryGame game = new MemoryGame(40, 40, seed);
+        game.drawFrame("1234");
+        //game.solicitNCharsInput(3);
+        //game.flashSequence("12345");
+        //game.startGame();
     }
 
-    public MemoryGame(int width, int height) {
+    public MemoryGame(int width, int height, int seed) {
         /* Sets up StdDraw so that it has a width by height grid of 16 by 16 squares as its canvas
          * Also sets up the scale so the top left is (0,0) and the bottom right is (width, height)
          */
@@ -44,29 +47,104 @@ public class MemoryGame {
         StdDraw.enableDoubleBuffering();
 
         //TODO: Initialize random number generator
+        this.rand = new Random(seed);
+
     }
 
     public String generateRandomString(int n) {
         //TODO: Generate random string of letters of length n
-        return null;
+        StringBuilder sb = new StringBuilder(n);
+        for(int i = 0; i < n; i++){
+            int index = rand.nextInt(CHARACTERS.length); // 生成0-n-1的随机数
+            sb.append(CHARACTERS[index]);
+        }
+        return sb.toString();
     }
 
     public void drawFrame(String s) {
         //TODO: Take the string and display it in the center of the screen
         //TODO: If game is not over, display relevant game information at the top of the screen
+
+
+        StdDraw.setFont(new Font("Monaco", Font.BOLD, 30));
+        StdDraw.clear();//清屏
+        StdDraw.clear(Color.black);//设定背景颜色
+       /*
+        // 画UI
+        if(!gameOver){
+            StdDraw.setFont(new Font("Monaco", Font.BOLD, 20));
+            StdDraw.setPenColor(Color.white);
+            StdDraw.textLeft(1, height - 1, "ROUND: " + round);
+            StdDraw.text(width/2, height - 1, playerTurn ? "Type!" : "Watch!");
+            StdDraw.textRight(width - 1, height - 1, ENCOURAGEMENT[round % ENCOURAGEMENT.length]);
+            StdDraw.line(0, height - 2, width, height - 2);
+        }
+           */
+        StdDraw.setPenColor(StdDraw.WHITE);
+        StdDraw.text(width / 2.0, height / 2.0, s);
+        StdDraw.show();
     }
+        /*StdDraw.clear();
+        StdDraw.clear(Color.black);
+
+        Font bigFont = new Font("Monaco", Font.BOLD, 30);
+        StdDraw.setFont(bigFont);
+        StdDraw.setPenColor(Color.white);
+        StdDraw.text(width/2, height/2, s);
+        StdDraw.show();*/
+
+
 
     public void flashSequence(String letters) {
         //TODO: Display each character in letters, making sure to blank the screen between letters
+        for (int i = 0; i < letters.length(); i++) {
+            drawFrame(Character.toString(letters.charAt(i))); // 显示当前字符
+            StdDraw.pause(500); // 显示1秒
+            drawFrame(" "); // 清空屏幕
+            StdDraw.pause(500); // 等待0.5秒
+        }
     }
 
     public String solicitNCharsInput(int n) {
         //TODO: Read n letters of player input
-        return null;
+        String input = "";
+        drawFrame(input);
+        while(input.length() < n){
+            if(!StdDraw.hasNextKeyTyped()){
+                continue;
+            }
+            char key = StdDraw.nextKeyTyped();
+            input += String.valueOf(key);
+            drawFrame(input);
+        }
+        StdDraw.pause(500);
+        return input;
     }
 
     public void startGame() {
         //TODO: Set any relevant variables before the game starts
+        boolean gameOver = false;
+        playerTurn = false;
+        round = 1;
+        while(!gameOver){
+            playerTurn = false;
+            drawFrame("ROUND" + round);
+            StdDraw.pause(1500);
+
+            String roundString = generateRandomString(round);
+            flashSequence(roundString);
+
+            playerTurn = true;
+            String playerInput = solicitNCharsInput(round);
+            if(!playerInput.equals(roundString)){
+                gameOver = true;
+                drawFrame("Game Over! Final level: "  + round);
+            }else{
+                drawFrame("Correct, well done!");
+                StdDraw.pause(1500);
+                round += 1;
+            }
+        }
 
         //TODO: Establish Game loop
     }
