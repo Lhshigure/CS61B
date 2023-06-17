@@ -63,12 +63,12 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     private void resize(int size){
         MyHashMap<K, V> newHashMap = new MyHashMap<>();
         for(ArrayMap<K,V> bucket : buckets){
-            for(K key : bucket.keySet()){
+            for(K key : bucket){
                 newHashMap.put(key, bucket.get(key));
             }
         }
         this.buckets = newHashMap.buckets;
-        this.size = newHashMap.size();
+        this.size = newHashMap.size;
     }
 
     /* Associates the specified value with the specified key in this map. */
