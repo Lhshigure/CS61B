@@ -38,12 +38,7 @@ public class SimpleOomage implements Oomage {
         } else {
             // TODO: Write a perfect hash function for Simple Oomages.
             int hasCode = 1;
-            //质素具有良好的扩散性
-            hasCode = 31 * hasCode + red;
-            hasCode = 31 * hasCode + blue;
-            hasCode = 31 * hasCode + green;
-            hasCode = 31 * hasCode;
-            return hasCode;
+            return (red/5 << 16) + (green/5 << 8) + blue/5;
         }
     }
 
