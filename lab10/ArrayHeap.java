@@ -192,6 +192,7 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
     @Override
     public T removeMin() {
         /* TODO: Your code here! */
+        // find the right-most leaf node;
         T retValue = contents[1].item();
         swap(1, size);
         size--;
@@ -224,15 +225,15 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
         int idx;
         for(idx = 1; idx <= size; idx++){
             if(contents[idx].item().equals(item)){
+                contents[idx].myPriority = priority;
+                swim(idx);
+                sink(idx);
                 break;
             }
         }
         if (idx == size + 1) {
             throw new IllegalArgumentException("no such item in the heap");
         }
-        contents[idx].myPriority = priority;
-        swim(idx);
-        sink(idx);
         return;
     }
 
