@@ -1,4 +1,7 @@
 import org.junit.Test;
+
+import java.util.NoSuchElementException;
+
 import static org.junit.Assert.*;
 
 /**
@@ -118,7 +121,7 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
         }
 
         Node parent = contents[parentIndex(index)];
-        // 判断index和parentIndex的大小
+        // 判断index的item和parentIndex的item的大小
         if(min(parentIndex(index), index) == index){
             swap(index, parentIndex(index));
             swim(parentIndex(index));
@@ -172,6 +175,9 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
     @Override
     public T peek() {
         /* TODO: Your code here! */
+        if (size == 0) {
+            throw new NoSuchElementException("heap is empty");
+        }
         return contents[1].item();
     }
 
@@ -217,10 +223,16 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
     public void changePriority(T item, double priority) {
         /* TODO: Your code here! */
         // find node which has the same item
-        for(int i = 1; i <= size; i++){
-            if(contents[i].item().equals(item)){
-                contents[i] = new Node(item, priority);
+        int idx;
+        for(idx = 1; idx <= size; idx++){
+            if(contents[idx].item().equals(item)){
+                contents[idx] = new Node(item, priority);
+                swim(idx);
+                sink(idx);
             }
+        }
+        if (idx == size + 1) {
+            throw new IllegalArgumentException("no such item in the heap");
         }
         return;
     }
