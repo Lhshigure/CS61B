@@ -119,8 +119,6 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
         if(index == 1){
             return;
         }
-
-        Node parent = contents[parentIndex(index)];
         // 判断index的item和parentIndex的item的大小
         if(min(parentIndex(index), index) == index){
             swap(index, parentIndex(index));
@@ -133,11 +131,12 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
      * Bubbles down the node currently at the given index.
      */
     private void sink(int index) {
-        // Throws an exception if index is invalid. DON'T CHANGE THIS LINE.
-        validateSinkSwimArg(index);
         if(!inBounds(index)){
             return;
         }
+        // Throws an exception if index is invalid. DON'T CHANGE THIS LINE.
+        validateSinkSwimArg(index);
+
         /** TODO: Your code here. */
         int left = leftIndex(index);
         int right = rightIndex(index);
@@ -193,13 +192,12 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
     @Override
     public T removeMin() {
         /* TODO: Your code here! */
-        // find the right-most leaf node;
-        swap(1,size);
-        T min = contents[size].item();
-        contents[size] = null;
-        size -= 1;
+        T retValue = contents[1].item();
+        swap(1, size);
+        size--;
         sink(1);
-        return min;
+        contents[size + 1] = null;
+        return retValue;
     }
 
     /**
@@ -226,15 +224,15 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
         int idx;
         for(idx = 1; idx <= size; idx++){
             if(contents[idx].item().equals(item)){
-                contents[idx].myPriority = priority;
-                swim(idx);
-                sink(idx);
                 break;
             }
         }
         if (idx == size + 1) {
             throw new IllegalArgumentException("no such item in the heap");
         }
+        contents[idx].myPriority = priority;
+        swim(idx);
+        sink(idx);
         return;
     }
 
