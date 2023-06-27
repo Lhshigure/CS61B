@@ -105,12 +105,16 @@ public class CountingSort {
         for(int i = 0; i < sorted.length; i++){
             sorted[i] += min;
         }
+        for(int i = 0; i < sorted.length; i++){
+            arr[i] += min;
+        }
         return sorted;
     }
 
     public static void main(String[] args){
         int[] array = new int[]{-1,-2,0,2,1,2,3,1,3,3};
         int[] sorted = betterCountingSort(array);
+        System.out.println(Arrays.toString(array));
         System.out.println(Arrays.toString(sorted));
     }
 }
