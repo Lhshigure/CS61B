@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 /**
  * Class with 2 ways of doing Counting sort, one naive way and one "better" way
  *
@@ -25,7 +27,7 @@ public class CountingSort {
         for (int i : arr) {
             counts[i]++;
         }
-
+        /*
         // when we're dealing with ints, we can just put each value
         // count number of times into the new array
         int[] sorted = new int[arr.length];
@@ -35,6 +37,7 @@ public class CountingSort {
                 sorted[k] = i;
             }
         }
+        */
 
         // however, below is a more proper, generalized implementation of
         // counting sort that uses start position calculation
@@ -54,7 +57,7 @@ public class CountingSort {
         }
 
         // return the sorted array
-        return sorted;
+        return sorted2;
     }
 
     /**
@@ -67,6 +70,47 @@ public class CountingSort {
      */
     public static int[] betterCountingSort(int[] arr) {
         // TODO make counting sort work with arrays containing negative numbers.
-        return null;
+        // find max and min
+        int max = Integer.MIN_VALUE;
+        int min = Integer.MAX_VALUE;
+        for (int i : arr) {
+            max = max > i ? max : i;
+        }
+        for(int i : arr){
+            min = min < i ? min : i;
+        }
+        for(int i = 0; i < arr.length; i++){
+            arr[i] -= min;
+        }
+        // calculate the range of value
+        int range = max - min + 1;
+        int[] counts = new int[range];
+        for(int i: arr){
+            counts[i]++;
+        }
+
+        int[] starts = new int[range];
+        int pos = 0;
+        for(int i = 0; i < starts.length; i++){
+            starts[i] = pos;
+            pos += counts[i];
+        }
+        int[] sorted = new int[arr.length];
+        for(int i = 0; i < sorted.length; i++){
+            int item = arr[i];
+            int place = starts[item];
+            sorted[place] = item;
+            starts[item] += 1;
+        }
+        for(int i = 0; i < sorted.length; i++){
+            sorted[i] += min;
+        }
+        return sorted;
+    }
+
+    public static void main(String[] args){
+        int[] array = new int[]{-1,-2,0,2,1,2,3,1,3,3};
+        int[] sorted = betterCountingSort(array);
+        System.out.println(Arrays.toString(sorted));
     }
 }
