@@ -42,17 +42,24 @@ public class Planet{
 		return f;
 	}
 
+	public double calcForceExertedByX(Planet p){
+		double dx = p.xxPos - xxPos;
+		double r = calcDistance(p);
+		return calcForceExertedBy(p) * dx / r;
+	}
+	public double calcForceExertedByY(Planet p){
+		double dy = p.yyPos - yyPos;
+		double r = calcDistance(p);
+		return calcForceExertedBy(p) * dy / r;
+	}
+
 	public double calcNetForceExertedByX(Planet[] ps){
 		double Fx = 0;
 		for(Planet p : ps){
 			if(this.equals(p)){
 				continue;
 			}else{
-				double r = this.calcDistance(p);
-				double f = this.calcForceExertedBy(p);
-				double dx = p.xxPos - this.xxPos;
-				double fx = f * (dx / r);
-				Fx += fx;
+				Fx += calcForceExertedByX(p);
 			}
 			//Fx += fx不能写在这里？
 		}
@@ -65,11 +72,7 @@ public class Planet{
 			if(this.equals(p)){
 				continue;
 			}else{
-				double r = this.calcDistance(p);
-				double f = this.calcForceExertedBy(p);
-				double dy = p.yyPos - this.yyPos;
-				double fy = f * (dy / r);
-				Fy += fy;
+				Fy += calcForceExertedByY(p);
 			}
 			//Fy += fy不能写在这里？
 		}
