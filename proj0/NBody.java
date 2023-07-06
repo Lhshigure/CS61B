@@ -18,8 +18,8 @@ public class NBody{
 			double xxVel = in.readDouble();
 			double yyVel = in.readDouble();
 			double mass = in.readDouble();
-			String imaFilename = in.readString();
-			ps[i] = new Planet(xxPos, yyPos, xxVel, xxVel, mass, imaFilename);
+			String imgFilename = in.readString();
+			ps[i] = new Planet(xxPos, yyPos, xxVel, xxVel, mass, imgFilename);
 		}
 		return ps;
 	}
@@ -59,7 +59,7 @@ public class NBody{
 			}
 			StdDraw.show();
 			StdDraw.pause(10);
-			t += dt;
+
 		}
 		StdOut.printf("%d\n", ps.length);
 		StdOut.printf("%.2e\n", r);

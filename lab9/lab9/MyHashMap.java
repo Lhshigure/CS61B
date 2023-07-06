@@ -26,10 +26,11 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         buckets = new ArrayMap[DEFAULT_SIZE];
         this.clear();
     }
-    public MyHashMap(int size){
-        buckets = new ArrayMap[size];
+    public  MyHashMap(int capacity){
+        buckets = new ArrayMap[capacity];
         this.clear();
     }
+
     /* Removes all of the mappings from this map. */
     @Override
     public void clear() {
@@ -57,37 +58,45 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
      */
     @Override
     public V get(K key) {
-        int hashCode = hash(key);
-        return buckets[hashCode].get(key);
-    }
-    private void resize(int size){
-        MyHashMap<K, V> newHashMap = new MyHashMap<>();
-        for(ArrayMap<K,V> bucket : buckets){
-            for(K key : bucket){
-                newHashMap.put(key, bucket.get(key));
-            }
+        if(key == null){
+            throw new IllegalArgumentException("arguement to get() is null");
         }
-        this.buckets = newHashMap.buckets;
-        this.size = newHashMap.size;
+        int i = hash(key);
+        return buckets[i].get(key);
     }
 
     /* Associates the specified value with the specified key in this map. */
     @Override
     public void put(K key, V value) {
-        if(loadFactor() >= MAX_LF){
-            resize(size * 2);
+        if(key == null){
+            throw new IllegalArgumentException("argument to get() is null");
         }
-        int hashCode = hash(key);
-        if(!containsKey(key)){
-            buckets[hashCode].put(key,value);
-            size += 1;
+        int i = hash(key);
+        buckets[i].put(key, value);
+        if(loadFactor() > MAX_LF){
+           resize(buckets.length * 2);
         }
+        size++;
+    }
+
+    private void resize(int capacity){
+        MyHashMap<K, V> temp = new MyHashMap<>(capacity);
+        for(int i = 0; i < buckets.length; i++){
+            for(K key: buckets[i].keySet()){
+                temp.put(key, buckets[i].get(key));
+            }
+        }
+        this.buckets = temp.buckets;
     }
 
     /* Returns the number of key-value mappings in this map. */
     @Override
     public int size() {
-        return size;
+        int count = 0;
+        for(ArrayMap<K, V> buckt: buckets){
+            count += buckt.size;
+        }
+        return count;
     }
 
     //////////////// EVERYTHING BELOW THIS LINE IS OPTIONAL ////////////////
@@ -95,11 +104,13 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     /* Returns a Set view of the keys contained in this map. */
     @Override
     public Set<K> keySet() {
-        Set<K> keys = new HashSet<>();
-        for(ArrayMap<K,V>bucket: buckets){
-            keys.addAll(bucket.keySet());
+        Set<K> keyset = new HashSet<>();
+        for(int i = 0; i < buckets.length; i++){
+            for(K key : buckets[i].keySet()){
+                keyset.add(key);
+            }
         }
-        return keys;
+        return keyset;
     }
 
     /* Removes the mapping for the specified key from this map if exists.
@@ -107,12 +118,15 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
      * UnsupportedOperationException. */
     @Override
     public V remove(K key) {
-       int hasCode = hash(key);
-       if(!buckets[hashCode()].containsKey(key)){
-           return null;
-       }
-       size --;
-       return buckets[hasCode].remove(key);
+        if(key == null){
+            throw new IllegalArgumentException("argument to remove() is null");
+        }
+        int i = hash(key);
+        if(!buckets[i].containsKey(key)) {
+            return null;
+        }
+        size --;
+        return buckets[i].remove(key);
     }
 
     /* Removes the entry for the specified key only if it is currently mapped to
@@ -120,18 +134,19 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
      * throw an UnsupportedOperationException.*/
     @Override
     public V remove(K key, V value) {
-        V getValue = get(key);
-        if(getValue == value) {
-            getValue = remove(key);
-        }else{
-            getValue = null;
-        }
-        return getValue;
+       if(key == null){
+           throw new IllegalArgumentException("argument to remove() is null");
+       }
+       int i = hash(key);
+       if(!buckets[i].containsKey(key)){
+           return null;
+       }
+       size--;
+       return buckets[i].remove(key, value);
     }
-
 
     @Override
     public Iterator<K> iterator() {
-        return keySet().iterator();
+       return keySet().iterator();
     }
 }
