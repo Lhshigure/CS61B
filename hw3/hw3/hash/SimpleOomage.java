@@ -18,26 +18,23 @@ public class SimpleOomage implements Oomage {
         if(o == this){
             return true;
         }
-        if(o == null){
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        if(o.getClass() != getClass()){
-            return false;
-        }
-        SimpleOomage that = (SimpleOomage)o;
-        return (this.blue == that.blue)&&(this.green == that.green)&&(this.red == that.red);
+        SimpleOomage other = (SimpleOomage) o;
+        return this.red == other.red && this.blue == other.blue && this.green == other.green;
     }
 
     /* Uncomment this method after you've written
        equals and failed the testHashCodeAndEqualsConsistency
-       test.*/
+       test.
+    */
     @Override
     public int hashCode() {
         if (!USE_PERFECT_HASH) {
             return red + green + blue;
         } else {
             // TODO: Write a perfect hash function for Simple Oomages.
-            int hasCode = 1;
             return (red/5 << 16) + (green/5 << 8) + blue/5;
         }
     }
