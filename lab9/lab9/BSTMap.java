@@ -126,9 +126,14 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
         if(p == null){
             return keyset;
         }
-        keySet(p.right);
-        keySet(p.left);
-        keyset.add(p.key);
+        while(p != null){
+           keyset.add(p.key);
+           p = p.left;
+        }
+        while(p != null){
+            keyset.add(p.key);
+            p = p.right;
+        }
         return keyset;
     }
 
