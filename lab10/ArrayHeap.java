@@ -207,7 +207,7 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
         Node newNode = new Node(item, priority);
         int i = 0;
         for(i = 1; i <= size; i++){
-            if(contents[i].equals(newNode)){
+            if(contents[i].item().equals(item)){
                 contents[i] = newNode;
                 break;
             }
