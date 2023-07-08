@@ -1,7 +1,4 @@
 import org.junit.Test;
-
-import java.util.NoSuchElementException;
-
 import static org.junit.Assert.*;
 
 /**
@@ -31,8 +28,7 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
      */
     private static int leftIndex(int i) {
         /* TODO: Your code here! */
-
-        return 2*i;
+        return i * 2;
     }
 
     /**
@@ -40,7 +36,7 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
      */
     private static int rightIndex(int i) {
         /* TODO: Your code here! */
-        return 2*i + 1;
+        return i * 2 + 1;
     }
 
     /**
@@ -48,11 +44,7 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
      */
     private static int parentIndex(int i) {
         /* TODO: Your code here! */
-        if(i == 1){
-            throw new IllegalArgumentException("root node has no parent");
-        }
-
-        return i/2;
+        return i / 2;
     }
 
     /**
@@ -114,13 +106,11 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
     private void swim(int index) {
         // Throws an exception if index is invalid. DON'T CHANGE THIS LINE.
         validateSinkSwimArg(index);
-
         /** TODO: Your code here. */
         if(index == 1){
-            return;
+            return ;
         }
-        // 判断index的item和parentIndex的item的大小
-        if(min(parentIndex(index), index) == index){
+        if(min(index, parentIndex(index))== index){
             swap(index, parentIndex(index));
             swim(parentIndex(index));
         }
@@ -138,12 +128,10 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
         validateSinkSwimArg(index);
 
         /** TODO: Your code here. */
-        int left = leftIndex(index);
-        int right = rightIndex(index);
-        int minIndex = min(left, right);
-        if(min(minIndex, index) == minIndex){
-            swap(minIndex, index);
-            sink(minIndex);
+        int minChildIndex = min(leftIndex(index), rightIndex(index));
+        if(min(minChildIndex, index) == minChildIndex){
+            swap(minChildIndex, index);
+            sink(minChildIndex);
         }
         return;
     }
@@ -160,11 +148,10 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
         }
 
         /* TODO: Your code here! */
-        //find left-most open spot in bottom level
-        contents[size+1] = new Node(item, priority);
-        size += 1;
+        Node newItem = new Node(item, priority);
+        contents[size+1] = newItem;
+        size++;
         swim(size);
-
     }
 
     /**
@@ -174,10 +161,7 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
     @Override
     public T peek() {
         /* TODO: Your code here! */
-        if (size == 0) {
-            throw new NoSuchElementException("heap is empty");
-        }
-        return contents[1].item();
+        return getNode(1).myItem;
     }
 
     /**
@@ -192,13 +176,12 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
     @Override
     public T removeMin() {
         /* TODO: Your code here! */
-        /* TODO: Your code here! */
-        T retValue = contents[1].item();
+        T reItem = getNode(1).myItem;
         swap(1, size);
+        contents[size] = null;
         size--;
         sink(1);
-        contents[size + 1] = null;
-        return retValue;
+        return reItem;
     }
 
     /**
@@ -221,19 +204,18 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
     @Override
     public void changePriority(T item, double priority) {
         /* TODO: Your code here! */
-        // find node which has the same item
-        int idx;
-        for(idx = 1; idx <= size; idx++){
-            if(contents[idx].item().equals(item)){
-                contents[idx].myPriority = priority;
-                swim(idx);
-                sink(idx);
-                break;
+        Node newNode = new Node(item, priority);
+        int i = 0;
+        for(i = 1; i <= size; i++){
+            if(contents[i].equals(newNode)){
+                contents[i] = newNode;
             }
         }
-        if (idx == size + 1) {
+        if (i == size + 1) {
             throw new IllegalArgumentException("no such item in the heap");
         }
+        swim(i);
+        sink(i);
         return;
     }
 
