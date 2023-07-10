@@ -27,7 +27,6 @@ public class MazeDepthFirstPaths extends MazeExplorer {
     private void dfs(int v) {
         marked[v] = true;
         announce();
-
         if (v == t) {
             targetFound = true;
         }
@@ -35,7 +34,6 @@ public class MazeDepthFirstPaths extends MazeExplorer {
         if (targetFound) {
             return;
         }
-
         for (int w : maze.adj(v)) {
             if (!marked[w]) {
                 edgeTo[w] = v;

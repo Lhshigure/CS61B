@@ -28,31 +28,41 @@ public class MazeBreadthFirstPaths extends MazeExplorer {
         distTo[s] = 0;
         edgeTo[s] = s;
 
-
     }
 
     /** Conducts a breadth first search of the maze starting at the source. */
     private void bfs() {
         // TODO: Your code here. Don't forget to update distTo, edgeTo, and marked, as well as call announce()
-       Queue<Integer> q = new ArrayDeque<>();
-       q.add(s);
-       while(!q.isEmpty()){
-           int frontier = q.remove();
-           marked[frontier] = true;
-           announce();
-           if(frontier == t){
-               targetFound = true;
-               break;
-           }
-           for(int w: maze.adj(frontier)){
-               if(!marked[w]){
-                   distTo[w] = distTo[frontier] + 1;
-                   edgeTo[w] = frontier;
-                   announce();
-                   q.add(w);
-               }
-           }
-       }
+        if(s == t){
+            targetFound = true;
+            return;
+        }
+        // add s to fringe
+        Queue<Integer> q = new ArrayDeque<>();
+        q.add(s);
+        marked[s] = true;
+        announce();
+        while(!q.isEmpty()){
+            int v = q.remove();
+            for(int w : maze.adj(v)){
+                if(!marked[w]){
+                    q.add(w);
+                    marked[w] = true;
+                    edgeTo[w] = v;
+                    distTo[w] = distTo[v] + 1;
+                    announce();
+                }
+                if(w == t){
+                    marked[w] = true;
+                    edgeTo[w] = v;
+                    announce();
+                    distTo[w] = distTo[v] + 1;
+                    targetFound = true;
+                    return;
+                }
+            }
+        }
+
     }
 
 
