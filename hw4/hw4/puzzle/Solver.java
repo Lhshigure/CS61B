@@ -22,14 +22,14 @@ public class Solver {
         }
 
     }
-    private ArrayList<Node> path;
+    private ArrayList<WorldState> path;
     private int total;
     private void getPath(Node goal){
         path = new ArrayList<>();
         total = goal.move;
         Node p = goal;
         while(p != null){
-            path.add(goal);
+            path.add(p.worldstate);
             p = p.pre;
         }
     }
@@ -57,7 +57,7 @@ public class Solver {
     public Iterable<WorldState> solution(){
         List<WorldState> ret = new ArrayList<>();
         for(int i = total; i >= 0; i--){
-            ret.add(path.get(i).worldstate);
+            ret.add(path.get(i));
         }
         return ret;
     }
