@@ -39,7 +39,7 @@ public class Board implements WorldState {
                 }
                 int targeti = tiles[i][j]-1 / N;
                 int targetj = tiles[i][j]-1 % N;
-                totalDis = Math.abs(targeti - i) + Math.abs(targetj - j);
+                totalDis += Math.abs(targeti - i) + Math.abs(targetj - j);
             }
         }
         return totalDis;
@@ -59,6 +59,29 @@ public class Board implements WorldState {
         return totalDis;
     }
 
+    @Override
+    public int hashCode(){
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object y){
+        if(y == this){
+            return true;
+        }
+        if(y == null || this.getClass() != y.getClass()){
+            return false;
+        }
+        Board o = (Board) y;
+        for(int i = 0; i < N; i++){
+            for(int j = 0; j < N ; j ++){
+                if(this.tiles[i][j] != o.tiles[i][j]){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
     /**
      * Returns neighbors of this board.
      * SPOILERZ: This is the answer.
