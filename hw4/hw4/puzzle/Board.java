@@ -33,7 +33,7 @@ public class Board implements WorldState {
     public int manhattan(){
         int totalDis = 0;
         for(int i = 0; i < N; i++){
-            for(int j = 0; j < N; i++){
+            for(int j = 0; j < N; j++){
                 if(tiles[i][j] == 0){
                     continue;
                 }
@@ -73,8 +73,11 @@ public class Board implements WorldState {
             return false;
         }
         Board o = (Board) y;
+        if(this.N != o.N){
+            return false;
+        }
         for(int i = 0; i < N; i++){
-            for(int j = 0; j < N ; j ++){
+            for(int j = 0; j < N ; j++){
                 if(this.tiles[i][j] != o.tiles[i][j]){
                     return false;
                 }
