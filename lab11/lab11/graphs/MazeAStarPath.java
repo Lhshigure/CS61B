@@ -67,20 +67,20 @@ public class MazeAStarPath extends MazeExplorer {
             pq.add(new Node(i, Integer.MAX_VALUE));
             distTo[i] = Integer.MAX_VALUE;
         }
-        while(!pq.isEmpty()){
+        while(true){
             Node curr = pq.remove();
             marked[curr.v] = true;
             announce();
             if(curr.v == t){
                 return;
             }
-            for(int adj: maze.adj(curr.v)){
-                if(distTo[curr.v] + 1 < distTo[adj]){
-                    distTo[adj] = distTo[curr.v] + 1;
-                    edgeTo[adj] = curr.v;
-                }
-                if(!marked[adj]){
-                    pq.add(new Node(adj, distTo[adj]));
+            else{
+                for(int adj: maze.adj(curr.v)){
+                    if(distTo[curr.v] + 1 < distTo[adj] && !marked[adj]){
+                        distTo[adj] = distTo[curr.v] + 1;
+                        edgeTo[adj] = curr.v;
+                        pq.add(new Node(adj, distTo[adj]));
+                    }
                 }
             }
         }
