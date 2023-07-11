@@ -36,10 +36,11 @@ public class Board implements WorldState {
             for(int j = 0; j < N; j++){
                 if(tiles[i][j] == 0){
                     continue;
+                }else{
+                    int targeti = tiles[i][j]-1 / N;
+                    int targetj = tiles[i][j]-1 % N;
+                    totalDis += Math.abs(targeti - i) + Math.abs(targetj - j);
                 }
-                int targeti = tiles[i][j]-1 / N;
-                int targetj = tiles[i][j]-1 % N;
-                totalDis += Math.abs(targeti - i) + Math.abs(targetj - j);
             }
         }
         return totalDis;
