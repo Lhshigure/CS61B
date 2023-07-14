@@ -48,49 +48,44 @@ public class QuickSort {
             Queue<Item> unsorted, Item pivot,
             Queue<Item> less, Queue<Item> equal, Queue<Item> greater) {
         // Your code here!
-            for(Item x: unsorted){
-                int cmp = pivot.compareTo(x);
-                if(cmp < 0){
-                    greater.enqueue(x);
-                } else if (cmp > 0) {
-                    less.enqueue(x);
-                }else{
-                    equal.enqueue(x);
-                }
+        for(Item item: unsorted){
+            int cmp = pivot.compareTo(item);
+            if(cmp < 0){
+                greater.enqueue(item);
+            } else if (cmp > 0) {
+                less.enqueue(item);
+            }else {
+                equal.enqueue(item);
             }
+        }
     }
 
     /** Returns a Queue that contains the given items sorted from least to greatest. */
     public static <Item extends Comparable> Queue<Item> quickSort(
             Queue<Item> items) {
         // Your code here!
-        Item p = getRandomItem(items);
-        Queue<Item> l = new Queue<>();
-        Queue<Item> e = new Queue<>();
-        Queue<Item> g = new Queue<>();
-        partition(items, p, l, e, g);
-        if(!l.isEmpty()){
-            l = quickSort(l);
+        Item pivot = getRandomItem(items);
+        Queue<Item> less = new Queue<>();
+        Queue<Item> equal = new Queue<>();
+        Queue<Item> greater = new Queue<>();
+        partition(items, pivot, less, equal, greater);
+        if(!less.isEmpty()){
+            less = quickSort(less);
         }
-        if(!g.isEmpty()){
-            g = quickSort(g);
+        if(!greater.isEmpty()){
+            greater = quickSort(greater);
         }
-        return catenate(catenate(l, e), g);
+        return catenate(catenate(less,equal),greater);
     }
-
     public static void main(String[] args){
-            Queue<String> q = new Queue<>();
-            q.enqueue("Alice");
-            q.enqueue("Vanessa");
-            q.enqueue("Ethan");
-            q.enqueue("Cat");
-            q.enqueue("Pig");
-            q.enqueue("Ant");
-            q.enqueue("Hello");
-            q.enqueue("Orange");
-            Queue<String> sortedQueue = QuickSort.quickSort(q);
-            System.out.println(q);
-            System.out.println(sortedQueue);
+        Queue<String> q = new Queue<>();
+        q.enqueue("Cat");
+        q.enqueue("Pig");
+        q.enqueue("Ant");
+        q.enqueue("Hello");
+        q.enqueue("Orange");
+        Queue<String> sortedQueue = quickSort(q);
+        System.out.println(q);
+        System.out.println(sortedQueue);
     }
-
 }
