@@ -27,7 +27,7 @@ public class RadixSort {
         String[] sorted = new String[asciis.length];
         System.arraycopy(asciis, 0, sorted, 0, asciis.length);
         // LSD
-        for(int index = 0; index < maxLength; index++){
+        for(int index = maxLength-1; index >=0; index--){
             sorted = sortHelperLSD(sorted, index);
         }
         return sorted;
@@ -45,7 +45,7 @@ public class RadixSort {
             // get least siginificant digit
             // if digit of curr ascii is larger than curr index
             if(ascii.length() > index){
-                int charIndex = (int)ascii.charAt(ascii.length() - index - 1);
+                int charIndex = ascii.charAt(index);
                 counts[charIndex] += 1;
             }else{
                 counts[0] += 1;
@@ -60,10 +60,10 @@ public class RadixSort {
         // create a sorted arr
         String[] sorted = new String[asciis.length];
         for(String ascii: asciis) {
-            if (ascii.length() > index) {
-                int pos = startPos[(int) ascii.charAt(ascii.length() - index - 1)];
+            if (ascii.length() - 1 >= index) {
+                int pos = startPos[(int) ascii.charAt(index)];
                 sorted[pos] = ascii;
-                startPos[(int) ascii.charAt(ascii.length() - index - 1)]++;
+                startPos[(int) ascii.charAt(index)]++;
             } else {
                 int pos = startPos[0];
                 sorted[pos] = ascii;
@@ -88,7 +88,7 @@ public class RadixSort {
     }
 
     public static void main(String[] args){
-        String[] arr = new String[]{"ab", "ac", "ad", "ba", "bb", "bd", "a", "b"};
+        String[] arr = new String[]{"abcc", "abcd", "ggg", "vcx", "crx", "pyf"};
         String[] sorted = sort(arr);
         System.out.println(Arrays.toString(sorted));
     }

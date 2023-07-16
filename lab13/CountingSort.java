@@ -100,6 +100,11 @@ public class CountingSort {
             sorted[pos] = item + min;
             startPoints[arr[i]] += 1;
         }
+        // 还原arr
+        for(int i = 0; i < arr.length; i++){
+            arr[i] += min;
+        }
+
         return sorted;
     }
 
